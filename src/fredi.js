@@ -685,6 +685,7 @@ console.log('[DEBUG-CMD]', { fromMe: m.key?.fromMe, sender: m.sender, botNumber,
     // Execute Command
     if (cmd) {
       try {
+        console.log('[DEBUG-EXEC]', { cmdType: typeof cmd, hasRun: typeof cmd?.run, chat: m.chat, sender: m.sender });
         const context = {
           client, m, args, text, prefix: usedPrefix, command, pushname,
           botNumber, itsMe, isDev, isSudo, isEnvOwner, Owner, settings,
@@ -701,14 +702,11 @@ console.log('[DEBUG-CMD]', { fromMe: m.key?.fromMe, sender: m.sender, botNumber,
 
         if (typeof cmd.run === 'function') await cmd.run(context);
         else if (typeof cmd === 'function') await cmd(context);
+        console.log('[DEBUG-EXEC] Finished command:', command);
       } catch (err) {
-        console.log('Command error:', err.message);
+        console.log('[DEBUG-EXEC ERROR]:', err?.stack || err?.message || err);
       }
     }
-
-    autoai({
-      client, m, settings, botNumber, body, isDev, isSudo, Owner, prefix: usedPrefix, fq: fakeQuoted, pushname
-    }).catch(e => console.log('❌ [AUTOAI]:', e.message));
 
     if (settings?.frediagent === true || settings?.frediagent === 'true') {
       frediai({
