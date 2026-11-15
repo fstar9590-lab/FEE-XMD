@@ -470,6 +470,7 @@ export default async (client, m, chatUpdate, store) => {
       MODS_ENV.some(num => num === senderNorm);
     const isEnvOwner = Boolean(OWNER_NUMBER_ENV && senderNorm === OWNER_NUMBER_ENV);
     const Owner = itsMe || isDev || isSudo || isEnvOwner;
+console.log('[DEBUG-CMD]', { fromMe: m.key?.fromMe, sender: m.sender, botNumber, Owner, mode, prefix: usedPrefix, body, command, cmdFound: Boolean(cmd) });
 
     let text = args.join(' ');
     m.isGroup = m.chat?.endsWith('@g.us');
